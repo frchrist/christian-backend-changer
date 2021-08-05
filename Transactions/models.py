@@ -9,13 +9,13 @@ ce model permet d'enregister  les echanges faitent par les clients
 
 """
 class Exchange(models.Model):
-    currencie = models.ForeignKey(to=Currencies, on_delete=models.CASCADE)
-    devise = models.ForeignKey(to=Currencies, on_delete=models.CASCADE)
+    currencie = models.ForeignKey(to=Currencies, on_delete=models.CASCADE, related_name="currencie")
+    devise = models.ForeignKey(to=Currencies, on_delete=models.CASCADE, related_name="devise")
     client = models.ForeignKey(to=Client, on_delete=models.PROTECT)
-    state = models.CharField(choice=(("done","done"), ("pending", "pending")), max_length=9)
+    state = models.CharField(choices=(("done","done"), ("pending", "pending")), max_length=9)
     to_wallet_address = models.CharField(max_length=100)
-    send_amount = models.decimalField(decimal_places=4) 
-    recieve_amount = models.decimalField(decimal_places=4) 
+    send_amount = models.DecimalField(decimal_places=4, max_digits=6)
+    recieve_amount = models.DecimalField(decimal_places=4, max_digits=6)
 
     def __str__(self):
         return "%s - %s"%(currencie, devise)

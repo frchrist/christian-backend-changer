@@ -8,10 +8,10 @@ Ce Model permet d'enregsitrer les monnaies et cripto-monnaie disponible  sur not
 class Currencies(models.Model):
     name = models.CharField(max_length=20)
     code  = models.CharField(max_length=9)
-    sell_value = models.decimalField(decimal_places=4) 
-    buy_value = models.decimalField(decimal_places=4) 
+    sell_value = models.DecimalField(decimal_places=4, max_digits=6)
+    buy_value = models.DecimalField(decimal_places=4, max_digits=6)
     in_stock = models.PositiveIntegerField()
-    min_qte = models.decimalField(decimal_places=2)
+    min_qte = models.DecimalField(decimal_places=2,max_digits=6) 
     is_favorite = models.BooleanField(default=False)
     address_pattern = models.CharField(max_length=200)
 
