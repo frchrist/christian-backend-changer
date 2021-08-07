@@ -12,7 +12,7 @@ class Exchange(models.Model):
     currencie = models.ForeignKey(to=Currencies, on_delete=models.CASCADE, related_name="currencie")
     devise = models.ForeignKey(to=Currencies, on_delete=models.CASCADE, related_name="devise")
     client = models.ForeignKey(to=Client, on_delete=models.PROTECT)
-    state = models.CharField(choices=(("done","done"), ("pending", "pending")), max_length=9)
+    state = models.CharField(choices=(("done","done"), ("pending", "pending"), ("failed", "failed")), max_length=9)
     to_wallet_address = models.CharField(max_length=100)
     send_amount = models.DecimalField(decimal_places=4, max_digits=6)
     recieve_amount = models.DecimalField(decimal_places=4, max_digits=6)

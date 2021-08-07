@@ -28,3 +28,6 @@ class Currencies(models.Model):
     @property
     def min_quatite(self):
         return self.min_qte
+    class Mata:
+        verbose_name_plural = "Currencies"
+        ordering = ["code"]
