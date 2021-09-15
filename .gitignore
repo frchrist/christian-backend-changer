@@ -4,3 +4,4 @@ env
 .git
 *.pyc
 *.dot
+server.bat

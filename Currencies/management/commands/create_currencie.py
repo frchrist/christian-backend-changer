@@ -1,26 +1,31 @@
 from django.core.management.base import BaseCommand
 from Currencies.models import Currencies
-from faker import Faker
-import random
-from decimal import Decimal
+
+currencies =[ {
+        "name":"BitCoin",
+        "code":"BTC",
+        "sell_value":36_000_430,
+        "buy_value":"36_000_000",
+        "in_stock":4,
+        "min_qte":0.0002,
+        "is_favorite":True,
+        "address_pattern":"^3[a-zA-Z0-9]{33}$"
+    },
+             {
+        "name":"Litcoin",
+        "code":"LTC",
+        "sell_value":174,
+        "buy_value":"170.2",
+        "in_stock":120,
+        "min_qte":0.002,
+        "is_favorite":True,
+        "address_pattern":"^M[a-zA-Z0-9]{33}$"
+             }
+]
 
 class Command(BaseCommand):
     help = "Create Fake currencies just for testing"
 
     def handle(self, *args, **kwargs):
-        fake = Faker()
-        count = 10
-        while count > 0:
-            code, name = fake.currency()
-            buy = random.randint(Decimal(1), Decimal(100))
-            sell = random.randint(Decimal(1), Decimal(100))
-            in_stock = random.randint(1, 100)
-            min_qte = random.randint(Decimal(1), Decimal(10))
-            pattern = "[a-zA-Z0-9]"
-            if Currencies.objects.filter(code=code).exists():
-                continue
-            c = Currencies.objects.create(name=name, code=code, sell_value=sell, buy_value=buy, in_stock=in_stock, min_qte=min_qte, address_pattern=pattern)
-            c.save()
-            print("%s was created"%c.name)
-            count -= 1
-
+        for item in currencies:
+            Currencies.objects.create(**item)

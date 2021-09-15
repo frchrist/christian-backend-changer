@@ -1,4 +1,4 @@
-
+from datetime import timedelta
 from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 from os import environ
@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "drf_yasg",
     'rest_framework',
      'rest_framework_simplejwt',
     "Authentication",
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -122,17 +124,53 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "Authentication.Client"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+EMAIL_HOST  = "olichange@admin.tg"
+FRONTEND_URL = "localhost:3000"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
     'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-    ]
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',
+        'user': '5/minute'
+    }
 }
 
 CORS_ORIGIN_WHITELIST = [
-    environ["FRONTEND_LOCAL_URL"],
+    "http://localhost:3000" ,
+    "http://localhost:3000",
     environ["FRONTEND_PROD_URL"],
 ]
+CORS_ALLOW_CREDENTIALS = True
+CODE_EXPIRE_TIME = 12*60*60
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}

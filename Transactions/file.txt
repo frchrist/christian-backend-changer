@@ -1,0 +1,5 @@
+{
+  "amount": "122823",
+  "base": "LTC",
+  "currency": "XOF"
+}
