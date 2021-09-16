@@ -63,7 +63,7 @@ class TwoFactorAuth(GenericAPIView):
         response = Response()
         data = serializer.data
         if data["refresh"]:
-            cookie_max_age = 3600 * 24 * 14 # 14 days
+            cookie_max_age =settings.COOKIE_AGES
             response.set_cookie('__refresh_token', data["refresh"], max_age=cookie_max_age, httponly=True )
             del data["refresh"]
         response.data = data
@@ -95,7 +95,7 @@ class CookieTokenRefreshView(TokenRefreshView):
             response.data["username"]  = user.username
             response.data["email"]  = user.email
         if response.data.get('refresh'):
-            cookie_max_age = 3600 * 24 * 14 # 14 days
+            cookie_max_age = settings.COOKIE_AGES
             response.set_cookie('refresh_token', response.data['refresh'], max_age=cookie_max_age, httponly=True )
             del response.data['refresh']
         return super().finalize_response(request, response, *args, **kwargs)
